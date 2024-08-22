@@ -3,6 +3,7 @@
  * @type {import("prettier").Config}
  */
 const config = {
+  printWidth: 190,
   trailingComma: 'all',
   useTabs: false,
   tabWidth: 2,
