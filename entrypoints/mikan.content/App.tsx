@@ -41,11 +41,19 @@ export default () => {
                 <CircleX />
               </Button>
             </div>
-            <MikanView mikan={mikan} />
+            <MikanView mikan={mikan} setMikan={setMikan} />
           </div>
         ) : (
           <Button className="rounded-full w-16 h-16">
-            <Tv onClick={() => setShow(true)} />
+            <Tv
+              onClick={() => {
+                if (!mikan.name) {
+                  alert('请先选择一个字幕组的rss')
+                } else {
+                  setShow(true)
+                }
+              }}
+            />
           </Button>
         )}
       </div>
