@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
 import CollectionForm from './CollectionForm'
+import { useConfig } from '@/composeables/useConfig'
 
 export default function CollectionTab() {
+  const config = useConfig()
   const {
     data: collections,
     error,
@@ -17,7 +19,7 @@ export default function CollectionTab() {
     refetch,
   } = useQuery({
     queryKey: ['collections'],
-    queryFn: () => api<Collection[]>('http://localhost:3000/collection'),
+    queryFn: () => api<Collection[]>(config.muuf_api_endpoint + '/collection'),
   })
   const [collection, setCollection] = useState<Collection | null>(null)
 
@@ -33,28 +35,17 @@ export default function CollectionTab() {
       {!collection && (
         <>
           {collections.map((collection) => (
-            <CollectionCard
-              key={collection.torrent_url}
-              collection={collection}
-              onClick={(collection) => setCollection(collection)}
-              afterRemove={() => refetch()}
-            />
+            <CollectionCard key={collection.torrent_url} collection={collection} onClick={(collection) => setCollection(collection)} afterRemove={() => refetch()} />
           ))}
           <div className="mx-4">
-            <Button onClick={() => setCollection(default_collection())}>
-              添加
-            </Button>
+            <Button onClick={() => setCollection(default_collection())}>添加</Button>
           </div>
         </>
       )}
       {collection && (
         <>
           <div>
-            <Button
-              variant="ghost"
-              className="flex items-center mx-2 my-2"
-              onClick={() => setCollection(null)}
-            >
+            <Button variant="ghost" className="flex items-center mx-2 my-2" onClick={() => setCollection(null)}>
               <ChevronLeft /> 返回
             </Button>
           </div>
@@ -89,8 +80,10 @@ const CollectionCard = ({
   onClick?: (collection: Collection) => void
   afterRemove?: (collection: Collection) => void
 }) => {
+  const config = useConfig()
+
   function removeCollection(collection: Collection) {
-    api<ApiResponse>('http://localhost:3000/rm-collection', {
+    api<ApiResponse>(config + '/rm-collection', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -124,10 +117,7 @@ const CollectionCard = ({
           toast({
             description: '确定要删除吗？',
             action: (
-              <ToastAction
-                altText="删除"
-                onClick={() => removeCollection(collection)}
-              >
+              <ToastAction altText="删除" onClick={() => removeCollection(collection)}>
                 删除
               </ToastAction>
             ),

@@ -1,15 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
@@ -18,14 +10,10 @@ import { Switch } from '@/components/ui/switch'
 import { ApiResponse, Collection, collectionSchema } from '@/lib/types'
 import { Trash2 } from 'lucide-react'
 import { api } from '@/lib/utils'
+import { useConfig } from '@/composeables/useConfig'
 
-const CollectionForm = ({
-  collection,
-  afterSave = () => {},
-}: {
-  collection: Collection
-  afterSave?: () => void
-}) => {
+const CollectionForm = ({ collection, afterSave = () => {} }: { collection: Collection; afterSave?: () => void }) => {
+  const config = useConfig()
   const form = useForm<z.infer<typeof collectionSchema>>({
     resolver: zodResolver(collectionSchema),
     defaultValues: {
@@ -43,7 +31,7 @@ const CollectionForm = ({
   const [readOnly] = useState(false)
 
   function onSubmit(values: z.infer<typeof collectionSchema>) {
-    api<ApiResponse>('http://localhost:3000/add-collection', {
+    api<ApiResponse>(config.muuf_api_endpoint + '/add-collection', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -143,10 +131,7 @@ const CollectionForm = ({
                               toast({
                                 description: '确定要删除吗？',
                                 action: (
-                                  <ToastAction
-                                    altText="删除"
-                                    onClick={() => season_folders.remove(index)}
-                                  >
+                                  <ToastAction altText="删除" onClick={() => season_folders.remove(index)}>
                                     删除
                                   </ToastAction>
                                 ),
@@ -157,12 +142,7 @@ const CollectionForm = ({
                       </div>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        type="number"
-                        placeholder="season"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} type="number" placeholder="season" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -175,11 +155,7 @@ const CollectionForm = ({
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        placeholder="folder"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} placeholder="folder" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -220,12 +196,7 @@ const CollectionForm = ({
                               toast({
                                 description: '确定要删除吗？',
                                 action: (
-                                  <ToastAction
-                                    altText="删除"
-                                    onClick={() =>
-                                      special_mappings.remove(index)
-                                    }
-                                  >
+                                  <ToastAction altText="删除" onClick={() => special_mappings.remove(index)}>
                                     删除
                                   </ToastAction>
                                 ),
@@ -236,11 +207,7 @@ const CollectionForm = ({
                       </div>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        placeholder="filename"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} placeholder="filename" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -253,11 +220,7 @@ const CollectionForm = ({
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        placeholder="name"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} placeholder="name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -271,10 +234,7 @@ const CollectionForm = ({
                   <FormItem>
                     <FormLabel>是否正则</FormLabel>
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -291,10 +251,7 @@ const CollectionForm = ({
             <FormItem>
               <FormLabel>外置字幕</FormLabel>
               <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

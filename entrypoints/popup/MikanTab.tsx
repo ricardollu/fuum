@@ -7,8 +7,10 @@ import MikanForm from './MikanForm'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
+import { useConfig } from '@/composeables/useConfig'
 
 export default function MikanTab() {
+  const config = useConfig()
   const {
     data: mikans,
     error,
@@ -17,7 +19,7 @@ export default function MikanTab() {
     refetch,
   } = useQuery({
     queryKey: ['mikans'],
-    queryFn: () => api<Mikan[]>('http://localhost:3000/mikan'),
+    queryFn: () => api<Mikan[]>(config.muuf_api_endpoint + '/mikan'),
   })
   const [mikan, setMikan] = useState<Mikan | null>(null)
 
@@ -33,12 +35,7 @@ export default function MikanTab() {
       {!mikan && (
         <>
           {mikans.map((mikan) => (
-            <MikanCard
-              key={mikan.url}
-              mikan={mikan}
-              onClick={(mikan) => setMikan(mikan)}
-              afterRemove={() => refetch()}
-            />
+            <MikanCard key={mikan.url} mikan={mikan} onClick={(mikan) => setMikan(mikan)} afterRemove={() => refetch()} />
           ))}
           <div className="mx-4">
             <Button onClick={() => setMikan(default_mikan())}>添加</Button>
@@ -48,11 +45,7 @@ export default function MikanTab() {
       {mikan && (
         <>
           <div>
-            <Button
-              variant="ghost"
-              className="flex items-center mx-2 my-2"
-              onClick={() => setMikan(null)}
-            >
+            <Button variant="ghost" className="flex items-center mx-2 my-2" onClick={() => setMikan(null)}>
               <ChevronLeft /> 返回
             </Button>
           </div>
@@ -77,17 +70,10 @@ const Title = styled.span`
   font-size: 0.75rem;
 `
 
-const MikanCard = ({
-  mikan,
-  onClick = () => {},
-  afterRemove = () => {},
-}: {
-  mikan: Mikan
-  onClick?: (mikan: Mikan) => void
-  afterRemove?: (mikan: Mikan) => void
-}) => {
+const MikanCard = ({ mikan, onClick = () => {}, afterRemove = () => {} }: { mikan: Mikan; onClick?: (mikan: Mikan) => void; afterRemove?: (mikan: Mikan) => void }) => {
+  const config = useConfig()
   function removeMikan(mikan: Mikan) {
-    api<ApiResponse>('http://localhost:3000/rm-mikan', {
+    api<ApiResponse>(config.muuf_api_endpoint + '/rm-mikan', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
