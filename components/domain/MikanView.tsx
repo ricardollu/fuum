@@ -1,10 +1,7 @@
-import { ApiResponse, Mikan } from '@/lib/types'
+import { Mikan } from '@/lib/types'
 import { Switch } from '@/components/ui/switch'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { BadgePlus } from 'lucide-react'
 import { Button } from '../ui/button'
-import { title } from 'process'
-import { api } from '@/lib/utils'
 import { sendMessage } from '@/entrypoints/background'
 
 export default ({ mikan, setMikan }: { mikan: Mikan; setMikan: (mikan: Mikan) => void }) => {

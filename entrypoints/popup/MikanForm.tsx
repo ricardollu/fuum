@@ -1,15 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
@@ -18,14 +10,10 @@ import { Switch } from '@/components/ui/switch'
 import { ApiResponse, Mikan, mikanSchema } from '@/lib/types'
 import { Trash2 } from 'lucide-react'
 import { api } from '@/lib/utils'
+import { useConfig } from '@/composeables/useConfig'
 
-const MikanForm = ({
-  mikan,
-  afterSave = () => {},
-}: {
-  mikan: Mikan
-  afterSave?: () => void
-}) => {
+const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: () => void }) => {
+  const { config, is_config_loading } = useConfig()
   const form = useForm<z.infer<typeof mikanSchema>>({
     resolver: zodResolver(mikanSchema),
     defaultValues: {
@@ -48,11 +36,12 @@ const MikanForm = ({
   const [readOnly] = useState(false)
 
   function onSubmit(values: z.infer<typeof mikanSchema>) {
+    if (is_config_loading) return
     const newMikan = {
       ...values,
       title_contain: values.title_contain.map(({ str }) => str),
     }
-    api<ApiResponse>('http://localhost:3000/add-mikan', {
+    api<ApiResponse>(config.muuf_api_endpoint + '/add-mikan', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -109,10 +98,7 @@ const MikanForm = ({
 
         <>
           <div>
-            <Button
-              type="button"
-              onClick={() => extra.append({ title: '', url: '' })}
-            >
+            <Button type="button" onClick={() => extra.append({ title: '', url: '' })}>
               添加额外项目
             </Button>
           </div>
@@ -133,10 +119,7 @@ const MikanForm = ({
                               toast({
                                 description: '确定要删除吗？',
                                 action: (
-                                  <ToastAction
-                                    altText="删除"
-                                    onClick={() => extra.remove(index)}
-                                  >
+                                  <ToastAction altText="删除" onClick={() => extra.remove(index)}>
                                     删除
                                   </ToastAction>
                                 ),
@@ -147,11 +130,7 @@ const MikanForm = ({
                       </div>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        placeholder="title"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} placeholder="title" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -175,10 +154,7 @@ const MikanForm = ({
         </>
         <>
           <div>
-            <Button
-              type="button"
-              onClick={() => skip.append({ title: '', url: '' })}
-            >
+            <Button type="button" onClick={() => skip.append({ title: '', url: '' })}>
               添加跳过项目
             </Button>
           </div>
@@ -199,10 +175,7 @@ const MikanForm = ({
                               toast({
                                 description: '确定要删除吗？',
                                 action: (
-                                  <ToastAction
-                                    altText="删除"
-                                    onClick={() => skip.remove(index)}
-                                  >
+                                  <ToastAction altText="删除" onClick={() => skip.remove(index)}>
                                     删除
                                   </ToastAction>
                                 ),
@@ -213,11 +186,7 @@ const MikanForm = ({
                       </div>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        readOnly={readOnly}
-                        placeholder="title"
-                        {...field}
-                      />
+                      <Input readOnly={readOnly} placeholder="title" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -242,10 +211,7 @@ const MikanForm = ({
 
         <>
           <div>
-            <Button
-              type="button"
-              onClick={() => titleContain.append({ str: '' })}
-            >
+            <Button type="button" onClick={() => titleContain.append({ str: '' })}>
               添加标题关键字
             </Button>
           </div>
@@ -265,10 +231,7 @@ const MikanForm = ({
                             toast({
                               description: '确定要删除吗？',
                               action: (
-                                <ToastAction
-                                  altText="删除"
-                                  onClick={() => titleContain.remove(index)}
-                                >
+                                <ToastAction altText="删除" onClick={() => titleContain.remove(index)}>
                                   删除
                                 </ToastAction>
                               ),
@@ -295,10 +258,7 @@ const MikanForm = ({
             <FormItem>
               <FormLabel>外置字幕</FormLabel>
               <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

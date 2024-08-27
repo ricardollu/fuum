@@ -92,6 +92,20 @@ export const collectionSchema = z.object({
   external_subtitle: z.boolean(),
 })
 
+export interface Config {
+  muuf_api_endpoint: string
+}
+
+export const default_config: () => Config = () => ({
+  muuf_api_endpoint: 'http://localhost:8000',
+})
+
+export const configSchema = z.object({
+  muuf_api_endpoint: z.string().min(1),
+})
+
+export const config_storage_key = 'sync:config'
+
 export interface ApiResponse {
   message: string
 }
