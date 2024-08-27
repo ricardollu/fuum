@@ -10,7 +10,7 @@ import { ToastAction } from '@/components/ui/toast'
 import { useConfig } from '@/composeables/useConfig'
 
 export default function MikanTab() {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
   const {
     data: mikans,
     error,
@@ -20,6 +20,7 @@ export default function MikanTab() {
   } = useQuery({
     queryKey: ['mikans'],
     queryFn: () => api<Mikan[]>(config.muuf_api_endpoint + '/mikan'),
+    enabled: !is_config_loading,
   })
   const [mikan, setMikan] = useState<Mikan | null>(null)
 
@@ -71,8 +72,9 @@ const Title = styled.span`
 `
 
 const MikanCard = ({ mikan, onClick = () => {}, afterRemove = () => {} }: { mikan: Mikan; onClick?: (mikan: Mikan) => void; afterRemove?: (mikan: Mikan) => void }) => {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
   function removeMikan(mikan: Mikan) {
+    if (is_config_loading) return
     api<ApiResponse>(config.muuf_api_endpoint + '/rm-mikan', {
       method: 'POST',
       headers: {

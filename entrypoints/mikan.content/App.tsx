@@ -1,10 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { default_mikan, Mikan, MikanItem } from '@/lib/types'
-import { CircleX, MousePointerClick, Tv } from 'lucide-react'
+import { BadgeMinus, BadgePlus, CircleX, DiamondPlus, Tv } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import MikanForm from '../popup/MikanForm'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import MikanView from '@/components/domain/MikanView'
 
 // https://mikanani.me/Home/Bangumi/3373
@@ -59,7 +57,7 @@ export default () => {
       </div>
       {Array.from(document.querySelectorAll('.central-container .subgroup-text'), (node) =>
         createPortal(
-          <MousePointerClick
+          <DiamondPlus
             size="14"
             onClick={() => {
               if (!show) setShow(true)
@@ -80,7 +78,7 @@ export default () => {
         const url = (node.querySelector('td:nth-child(4) a') as HTMLAnchorElement).href
         return createPortal(
           <td>
-            <MousePointerClick
+            <BadgePlus
               size="18"
               onClick={() => {
                 if (!show) setShow(true)
@@ -105,7 +103,7 @@ export default () => {
         const url = (node.querySelector('td:nth-child(4) a') as HTMLAnchorElement).href
         return createPortal(
           <td>
-            <MousePointerClick
+            <BadgeMinus
               size="18"
               onClick={() => {
                 if (!show) setShow(true)

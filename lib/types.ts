@@ -97,7 +97,7 @@ export interface Config {
 }
 
 export const default_config: () => Config = () => ({
-  muuf_api_endpoint: 'http://localhost:3000',
+  muuf_api_endpoint: 'http://localhost:8000',
 })
 
 export const configSchema = z.object({

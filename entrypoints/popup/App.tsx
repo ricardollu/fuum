@@ -1,11 +1,9 @@
-import { useState } from 'react'
 import './App.css'
 import Home from './Home'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/toaster'
 
 function App() {
-  const [count, setCount] = useState(0)
   const queryClient = new QueryClient()
 
   return (

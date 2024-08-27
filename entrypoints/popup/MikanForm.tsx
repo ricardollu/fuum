@@ -13,7 +13,7 @@ import { api } from '@/lib/utils'
 import { useConfig } from '@/composeables/useConfig'
 
 const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: () => void }) => {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
   const form = useForm<z.infer<typeof mikanSchema>>({
     resolver: zodResolver(mikanSchema),
     defaultValues: {
@@ -36,6 +36,7 @@ const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: 
   const [readOnly] = useState(false)
 
   function onSubmit(values: z.infer<typeof mikanSchema>) {
+    if (is_config_loading) return
     const newMikan = {
       ...values,
       title_contain: values.title_contain.map(({ str }) => str),

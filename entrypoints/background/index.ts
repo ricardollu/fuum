@@ -19,6 +19,11 @@ export default defineBackground({
         config = c
       }
     })
+    storage.watch<Config>(config_storage_key, (new_config) => {
+      if (new_config) {
+        config = new_config
+      }
+    })
 
     onMessage('saveMikan', (message) => {
       return api<ApiResponse>(config.muuf_api_endpoint + '/add-mikan', {

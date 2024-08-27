@@ -13,7 +13,7 @@ import { api } from '@/lib/utils'
 import { useConfig } from '@/composeables/useConfig'
 
 const CollectionForm = ({ collection, afterSave = () => {} }: { collection: Collection; afterSave?: () => void }) => {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
   const form = useForm<z.infer<typeof collectionSchema>>({
     resolver: zodResolver(collectionSchema),
     defaultValues: {
@@ -31,6 +31,7 @@ const CollectionForm = ({ collection, afterSave = () => {} }: { collection: Coll
   const [readOnly] = useState(false)
 
   function onSubmit(values: z.infer<typeof collectionSchema>) {
+    if (is_config_loading) return
     api<ApiResponse>(config.muuf_api_endpoint + '/add-collection', {
       method: 'POST',
       headers: {

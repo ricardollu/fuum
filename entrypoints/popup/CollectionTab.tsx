@@ -10,7 +10,7 @@ import CollectionForm from './CollectionForm'
 import { useConfig } from '@/composeables/useConfig'
 
 export default function CollectionTab() {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
   const {
     data: collections,
     error,
@@ -20,6 +20,7 @@ export default function CollectionTab() {
   } = useQuery({
     queryKey: ['collections'],
     queryFn: () => api<Collection[]>(config.muuf_api_endpoint + '/collection'),
+    enabled: !is_config_loading,
   })
   const [collection, setCollection] = useState<Collection | null>(null)
 
@@ -80,10 +81,11 @@ const CollectionCard = ({
   onClick?: (collection: Collection) => void
   afterRemove?: (collection: Collection) => void
 }) => {
-  const config = useConfig()
+  const { config, is_config_loading } = useConfig()
 
   function removeCollection(collection: Collection) {
-    api<ApiResponse>(config + '/rm-collection', {
+    if (is_config_loading) return
+    api<ApiResponse>(config.muuf_api_endpoint + '/rm-collection', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
