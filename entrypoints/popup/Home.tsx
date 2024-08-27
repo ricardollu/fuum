@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import MikanTab from './MikanTab'
 import CollectionTab from './CollectionTab'
-import ConfigTab from './ConfigTab'
+import FuumTab from './FuumTab'
 
 function Home() {
   return (
@@ -19,7 +19,7 @@ function Home() {
           <CollectionTab />
         </TabsContent>
         <TabsContent value="config">
-          <ConfigTab />
+          <FuumTab />
         </TabsContent>
       </Tabs>
     </>
