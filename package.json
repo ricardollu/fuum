@@ -2,7 +2,7 @@
   "name": "fuum",
   "description": "Fuum is a web extension that helps you use a tool called muuf. It requires a muuf server to work.",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
