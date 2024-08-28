@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Bangumi, default_mikan, Mikan, MikanItem } from '@/lib/types'
-import { BadgeMinus, BadgePlus, CircleX, DiamondPlus, Tv } from 'lucide-react'
+import { BadgeMinus, BadgePlus, CircleX, DiamondPlus, RefreshCw, Tv } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import MikanView from '@/components/domain/MikanView'
@@ -10,6 +10,7 @@ export default () => {
   const [show, setShow] = useState(false)
   const [mikan, setMikan] = useState<Mikan>(default_mikan())
   const [bangumi, setBangumi] = useState<Bangumi>()
+  const [, forceUpdate] = useReducer((x) => x + 1, 0) // https://legacy.reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
 
   function addMikanSkip(item: MikanItem) {
     setMikan((prevMikan) => ({
@@ -44,17 +45,22 @@ export default () => {
             <MikanView mikan={mikan} setMikan={setMikan} />
           </div>
         ) : (
-          <Button className="rounded-full w-16 h-16">
-            <Tv
-              onClick={() => {
-                if (!mikan.name) {
-                  alert('请先选择一个字幕组的rss')
-                } else {
-                  setShow(true)
-                }
-              }}
-            />
-          </Button>
+          <>
+            <Button className="rounded-full w-16 h-16">
+              <Tv
+                onClick={() => {
+                  if (!mikan.name) {
+                    alert('请先选择一个字幕组的rss')
+                  } else {
+                    setShow(true)
+                  }
+                }}
+              />
+            </Button>
+            <Button className="rounded-full w-16 h-16 ml-4">
+              <RefreshCw onClick={forceUpdate} />
+            </Button>
+          </>
         )}
       </div>
       {bangumi &&
