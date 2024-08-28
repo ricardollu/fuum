@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { default_mikan, Mikan, MikanItem } from '@/lib/types'
+import { Bangumi, default_mikan, Mikan, MikanItem } from '@/lib/types'
 import { BadgeMinus, BadgePlus, CircleX, DiamondPlus, Tv } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -9,6 +9,7 @@ import MikanView from '@/components/domain/MikanView'
 export default () => {
   const [show, setShow] = useState(false)
   const [mikan, setMikan] = useState<Mikan>(default_mikan())
+  const [bangumi, setBangumi] = useState<Bangumi>()
 
   function addMikanSkip(item: MikanItem) {
     setMikan((prevMikan) => ({
@@ -26,6 +27,7 @@ export default () => {
       .then((res) => {
         console.log(res)
         if (res.name_cn) name = res.name_cn
+        if (res) setBangumi(res)
       })
   }, [])
 
@@ -55,6 +57,16 @@ export default () => {
           </Button>
         )}
       </div>
+      {bangumi &&
+        createPortal(
+          <>
+            <div>{`name_cn: ${bangumi.name_cn}`}</div>
+            <div>{`eps: ${bangumi.eps}(${bangumi.total_episodes})`}</div>
+            <div>{`rating: ${bangumi.rating.score}/${bangumi.rating.total}`}</div>
+            <div>{`summary: ${bangumi.summary}`}</div>
+          </>,
+          document.querySelector("p.bangumi-info:has(> a[href^='https://bgm.tv/subject/'])") as Element,
+        )}
       {Array.from(document.querySelectorAll('.central-container .subgroup-text'), (node) =>
         createPortal(
           <DiamondPlus

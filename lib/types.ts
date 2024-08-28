@@ -109,3 +109,16 @@ export const config_storage_key = 'sync:config'
 export interface ApiResponse {
   message: string
 }
+
+export interface Bangumi {
+  id: number
+  name: string
+  name_cn: string
+  eps: number
+  total_episodes: number
+  summary: string
+  rating: {
+    score: number
+    total: number
+  }
+}
