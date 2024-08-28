@@ -17,7 +17,7 @@ export default () => {
     }))
   }
 
-  let name = (document.querySelector('p.bangumi-title') as HTMLParagraphElement)?.innerText
+  let name = (document.querySelector('p.bangumi-title') as HTMLParagraphElement)?.innerText.trim()
   // 用bgm.tv的api获取中文名
   useEffect(() => {
     const bgmSubjectId = (document.querySelector("a[href^='https://bgm.tv/subject/']") as HTMLAnchorElement)?.href.split('/').pop()
