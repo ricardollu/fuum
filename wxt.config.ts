@@ -5,7 +5,7 @@ import path from 'path'
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    permissions: ['storage'],
+    permissions: ['storage', 'https://api.bgm.tv/*'],
   },
   vite: () => ({
     resolve: {
