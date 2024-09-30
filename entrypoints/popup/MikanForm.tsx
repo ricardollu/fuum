@@ -265,6 +265,20 @@ const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: 
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="ep_revise"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>集数纠正</FormLabel>
+              <FormControl>
+                <Input readOnly={readOnly} type="number" {...field} onChange={(event) => field.onChange(+event.target.value)} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {!readOnly && <Button type="submit">保存</Button>}
       </form>
     </Form>

@@ -3,6 +3,7 @@ import { Switch } from '@/components/ui/switch'
 import { BadgePlus } from 'lucide-react'
 import { Button } from '../ui/button'
 import { sendMessage } from '@/entrypoints/background'
+import { Input } from '../ui/input'
 
 export default ({ mikan, setMikan }: { mikan: Mikan; setMikan: (mikan: Mikan) => void }) => {
   function add_mikan() {
@@ -69,6 +70,20 @@ export default ({ mikan, setMikan }: { mikan: Mikan; setMikan: (mikan: Mikan) =>
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-semibold">External Subtitle</h3>
           <Switch checked={mikan.external_subtitle} />
+        </div>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-semibold">集数修正</h3>
+          <Input
+            type="number"
+            value={mikan.ep_revise}
+            className="w-1/2"
+            onChange={(e) => {
+              setMikan({
+                ...mikan,
+                ep_revise: parseInt(e.target.value),
+              })
+            }}
+          />
         </div>
         <div>
           <Button onClick={add_mikan}>保存</Button>

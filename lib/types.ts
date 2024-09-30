@@ -18,6 +18,7 @@ export interface Mikan {
   skip: MikanItem[]
   title_contain: string[]
   external_subtitle: boolean
+  ep_revise: number
 }
 
 export const default_mikan: () => Mikan = () => ({
@@ -27,6 +28,7 @@ export const default_mikan: () => Mikan = () => ({
   skip: [],
   title_contain: [],
   external_subtitle: false,
+  ep_revise: 0,
 })
 
 const mikanItemSchema = z.object({
@@ -41,6 +43,7 @@ export const mikanSchema = z.object({
   skip: z.array(mikanItemSchema),
   title_contain: strArrSchema,
   external_subtitle: z.boolean(),
+  ep_revise: z.number().int(),
 })
 
 interface SeasonFolder {
@@ -97,7 +100,7 @@ export interface Config {
 }
 
 export const default_config: () => Config = () => ({
-  muuf_api_endpoint: 'http://localhost:8000',
+  muuf_api_endpoint: 'http://127.0.0.1:3000',
 })
 
 export const configSchema = z.object({
