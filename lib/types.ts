@@ -19,6 +19,7 @@ export interface Mikan {
   title_contain: string[]
   external_subtitle: boolean
   ep_revise: number
+  season?: number
 }
 
 export const default_mikan: () => Mikan = () => ({
@@ -44,6 +45,7 @@ export const mikanSchema = z.object({
   title_contain: strArrSchema,
   external_subtitle: z.boolean(),
   ep_revise: z.number().int(),
+  season: z.number().int().optional(),
 })
 
 interface SeasonFolder {

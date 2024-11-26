@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
@@ -11,6 +11,7 @@ import { ApiResponse, Mikan, mikanSchema } from '@/lib/types'
 import { Trash2 } from 'lucide-react'
 import { api } from '@/lib/utils'
 import { useConfig } from '@/composeables/useConfig'
+import { sendMessage } from '../background'
 
 const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: () => void }) => {
   const { config, is_config_loading } = useConfig()
@@ -41,14 +42,7 @@ const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: 
       ...values,
       title_contain: values.title_contain.map(({ str }) => str),
     }
-    api<ApiResponse>(config.muuf_api_endpoint + '/add-mikan', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newMikan),
-    })
+    sendMessage('saveMikan', newMikan)
       .then((res) => {
         toast({
           description: res.message,
@@ -271,6 +265,20 @@ const MikanForm = ({ mikan, afterSave = () => {} }: { mikan: Mikan; afterSave?: 
           render={({ field }) => (
             <FormItem>
               <FormLabel>集数纠正</FormLabel>
+              <FormControl>
+                <Input readOnly={readOnly} type="number" {...field} onChange={(event) => field.onChange(+event.target.value)} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="season"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>指定季</FormLabel>
               <FormControl>
                 <Input readOnly={readOnly} type="number" {...field} onChange={(event) => field.onChange(+event.target.value)} />
               </FormControl>

@@ -32,7 +32,10 @@ export default defineBackground({
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(message.data),
+        body: JSON.stringify({
+          ...message.data,
+          season: message.data.season && message.data.season < 0 ? null : message.data.season,
+        }),
       })
     })
   },

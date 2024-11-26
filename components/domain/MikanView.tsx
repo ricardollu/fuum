@@ -85,6 +85,20 @@ export default ({ mikan, setMikan }: { mikan: Mikan; setMikan: (mikan: Mikan) =>
             }}
           />
         </div>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-semibold">指定季</h3>
+          <Input
+            type="number"
+            value={mikan.season || undefined}
+            className="w-1/2"
+            onChange={(e) => {
+              setMikan({
+                ...mikan,
+                season: e.target.value && parseInt(e.target.value) < 0 ? undefined : parseInt(e.target.value),
+              })
+            }}
+          />
+        </div>
         <div>
           <Button onClick={add_mikan}>保存</Button>
         </div>
